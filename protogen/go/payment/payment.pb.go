@@ -2,6 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.35.1
 // 	protoc        v5.28.3
+
 // source: proto/payment/payment.proto
 
 package payment
