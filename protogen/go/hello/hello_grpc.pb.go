@@ -30,7 +30,7 @@ const (
 type HelloServiceClient interface {
 	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloResponse, error)
 	SayManyHellos(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (grpc.ServerStreamingClient[HelloResponse], error)
-	SayHelloToEveryone(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[HelloResponse, HelloResponse], error)
+	SayHelloToEveryone(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[HelloRequest, HelloResponse], error)
 }
 
 type helloServiceClient struct {
@@ -70,18 +70,18 @@ func (c *helloServiceClient) SayManyHellos(ctx context.Context, in *HelloRequest
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
 type HelloService_SayManyHellosClient = grpc.ServerStreamingClient[HelloResponse]
 
-func (c *helloServiceClient) SayHelloToEveryone(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[HelloResponse, HelloResponse], error) {
+func (c *helloServiceClient) SayHelloToEveryone(ctx context.Context, opts ...grpc.CallOption) (grpc.ClientStreamingClient[HelloRequest, HelloResponse], error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	stream, err := c.cc.NewStream(ctx, &HelloService_ServiceDesc.Streams[1], HelloService_SayHelloToEveryone_FullMethodName, cOpts...)
 	if err != nil {
 		return nil, err
 	}
-	x := &grpc.GenericClientStream[HelloResponse, HelloResponse]{ClientStream: stream}
+	x := &grpc.GenericClientStream[HelloRequest, HelloResponse]{ClientStream: stream}
 	return x, nil
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type HelloService_SayHelloToEveryoneClient = grpc.ClientStreamingClient[HelloResponse, HelloResponse]
+type HelloService_SayHelloToEveryoneClient = grpc.ClientStreamingClient[HelloRequest, HelloResponse]
 
 // HelloServiceServer is the server API for HelloService service.
 // All implementations must embed UnimplementedHelloServiceServer
@@ -89,7 +89,7 @@ type HelloService_SayHelloToEveryoneClient = grpc.ClientStreamingClient[HelloRes
 type HelloServiceServer interface {
 	SayHello(context.Context, *HelloRequest) (*HelloResponse, error)
 	SayManyHellos(*HelloRequest, grpc.ServerStreamingServer[HelloResponse]) error
-	SayHelloToEveryone(grpc.ClientStreamingServer[HelloResponse, HelloResponse]) error
+	SayHelloToEveryone(grpc.ClientStreamingServer[HelloRequest, HelloResponse]) error
 	mustEmbedUnimplementedHelloServiceServer()
 }
 
@@ -106,7 +106,7 @@ func (UnimplementedHelloServiceServer) SayHello(context.Context, *HelloRequest) 
 func (UnimplementedHelloServiceServer) SayManyHellos(*HelloRequest, grpc.ServerStreamingServer[HelloResponse]) error {
 	return status.Errorf(codes.Unimplemented, "method SayManyHellos not implemented")
 }
-func (UnimplementedHelloServiceServer) SayHelloToEveryone(grpc.ClientStreamingServer[HelloResponse, HelloResponse]) error {
+func (UnimplementedHelloServiceServer) SayHelloToEveryone(grpc.ClientStreamingServer[HelloRequest, HelloResponse]) error {
 	return status.Errorf(codes.Unimplemented, "method SayHelloToEveryone not implemented")
 }
 func (UnimplementedHelloServiceServer) mustEmbedUnimplementedHelloServiceServer() {}
@@ -160,11 +160,11 @@ func _HelloService_SayManyHellos_Handler(srv interface{}, stream grpc.ServerStre
 type HelloService_SayManyHellosServer = grpc.ServerStreamingServer[HelloResponse]
 
 func _HelloService_SayHelloToEveryone_Handler(srv interface{}, stream grpc.ServerStream) error {
-	return srv.(HelloServiceServer).SayHelloToEveryone(&grpc.GenericServerStream[HelloResponse, HelloResponse]{ServerStream: stream})
+	return srv.(HelloServiceServer).SayHelloToEveryone(&grpc.GenericServerStream[HelloRequest, HelloResponse]{ServerStream: stream})
 }
 
 // This type alias is provided for backwards compatibility with existing code that references the prior non-generic stream type by name.
-type HelloService_SayHelloToEveryoneServer = grpc.ClientStreamingServer[HelloResponse, HelloResponse]
+type HelloService_SayHelloToEveryoneServer = grpc.ClientStreamingServer[HelloRequest, HelloResponse]
 
 // HelloService_ServiceDesc is the grpc.ServiceDesc for HelloService service.
 // It's only intended for direct use with grpc.RegisterService,

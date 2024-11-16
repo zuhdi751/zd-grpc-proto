@@ -88,7 +88,7 @@ func request_HelloService_SayHelloToEveryone_0(ctx context.Context, marshaler ru
 	}
 	dec := marshaler.NewDecoder(req.Body)
 	for {
-		var protoReq extHello.HelloResponse
+		var protoReq extHello.HelloRequest
 		err = dec.Decode(&protoReq)
 		if err == io.EOF {
 			break

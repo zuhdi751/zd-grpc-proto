@@ -47,7 +47,7 @@ paths:
           in: body
           required: true
           schema:
-            $ref: '#/definitions/helloHelloResponse'
+            $ref: '#/definitions/helloHelloRequest'
       tags:
         - HelloService
   /hello.HelloService/SayManyHellos:
