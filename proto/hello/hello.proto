@@ -13,7 +13,8 @@ message HelloResponse {
 }
 
 service HelloService {
-    rpc SayHello (HelloRequest) returns (HelloResponse){}
-    rpc SayManyHellos(HelloRequest) returns (stream HelloResponse){}
-    rpc SayHelloToEveryone(stream HelloRequest) returns (HelloResponse){}
+    rpc SayHello (HelloRequest) returns (HelloResponse) {}
+    rpc SayManyHellos(HelloRequest) returns (stream HelloResponse) {}
+    rpc SayHelloToEveryone(stream HelloRequest) returns (HelloResponse) {}
+    rpc SayHelloToContinuous(stream HelloRequest) returns (stream HelloResponse) {}
 }
