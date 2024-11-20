@@ -3,7 +3,6 @@ syntax = "proto3";
 package bank;
 
 import "proto/bank/type/account.proto";
-// import "bank/type/account.proto";
 
 option go_package = "github.com/zuhdi751/zd-grpc-proto/protogen/go/bank";
 
