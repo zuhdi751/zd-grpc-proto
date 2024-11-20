@@ -13,11 +13,30 @@ endif
 
 
 .PHONY: protoc-go
-protoc-go:
+protoc-go3:
 	protoc --go_opt=module=${GO_MODULE} --go_out=. \
 	--go-grpc_opt=module=${GO_MODULE} --go-grpc_out=. \
 	./proto/hello/*.proto ./proto/payment/*.proto ./proto/transaction/*.proto \
+	./proto/bank/*.proto ./proto/bank/type/*.proto \
 
+
+protoc-go2:
+	protoc \
+	--proto_path=. --proto_path=./proto/bank --proto_path=./proto/google/type \
+	--go_opt=module=${GO_MODULE} --go_out=. \
+	--go-grpc_opt=module=${GO_MODULE} --go-grpc_out=. \
+	--include_imports --descriptor_set_out \
+	--include_source_info --descriptor_set_out \
+	./proto/hello/hello.proto ./proto/payment/payment.proto ./proto/transaction/cart.proto \
+	./proto/bank/service.proto ./proto/bank/type/account.proto
+
+protoc-go:
+	protoc \
+	--proto_path=. --proto_path=./proto/bank --proto_path=./proto/google/type \
+	--go_opt=module=${GO_MODULE} --go_out=. \
+	--go-grpc_opt=module=${GO_MODULE} --go-grpc_out=. \
+	./proto/hello/hello.proto ./proto/payment/payment.proto ./proto/transaction/cart.proto \
+	./proto/bank/service.proto ./proto/bank/type/account.proto
 
 .PHONY: build
 build: clean protoc-go
