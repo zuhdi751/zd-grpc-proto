@@ -9,5 +9,5 @@ option go_package = "github.com/zuhdi751/zd-grpc-proto/protogen/go/bank";
 
 service BankService {
     rpc GetCurrentBalance(CurrentBalanceRequest) returns (CurrentBalanceResponse){}
-    rpc FetchExchangeRates(ExchangeRatesRequest) returns (stream ExchangeRatesResponse){}
+    rpc FetchExchangeRates(ExchangeRateRequest) returns (stream ExchangeRateResponse){}
 }
