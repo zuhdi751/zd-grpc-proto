@@ -66,7 +66,6 @@ func (x *CurrentBalanceRequest) GetAccountNumber() string {
 	return ""
 }
 
-// ... previous code remains the same
 type CurrentBalanceResponse struct {
 	state         protoimpl.MessageState
 	sizeCache     protoimpl.SizeCache
